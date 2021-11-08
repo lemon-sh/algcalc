@@ -25,10 +25,11 @@ const static char nanerr[] PROGMEM = "Error at %d";
 
 namespace App
 {
-	LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
+	LiquidCrystal lcd(A0,A1,A2,A3,A4,A5);
 	char masterbuf[BUFSIZE+1], slavebuf[17];
-	byte buflength = 0, cursoroffset = 0, viewoffset = 0, isfirsteval = 1;
-	double evalout;
+	byte buflength = 0, cursoroffset = 0, viewoffset = 0;
+	double evalout = 0.0;
+	te_variable evalvar = {"x", &evalout};
 
 	void render(byte withslave)
 	{
@@ -107,24 +108,20 @@ namespace App
 
 	void clearmaster() {
 		buflength = 0;
+		cursoroffset = 0;
 		render(0);
 	}
 
 	void calculate() {
 		int terr;
 		masterbuf[buflength] = 0;
-		if (isfirsteval) {
-			evalout = te_interp(masterbuf, &terr);
-		} else {
-			te_variable xvar = {"x", &evalout};
-			te_expr *expr = te_compile(masterbuf, &xvar, 1, &terr);
-			evalout = te_eval(expr);
-			te_free(expr);
-		}
+		te_expr *expr = te_compile(masterbuf, &evalvar, 1, &terr);
+		evalout = te_eval(expr);
+		te_free(expr);
 		slavebuf[0] = '=';
 		slavebuf[1] = ' ';
 		if (isnan(evalout)) {
-			cursoroffset = terr;
+			cursoroffset = terr-1;
 			int snsize = snprintf_P(slavebuf+2, 15, nanerr, terr);
 			if (snsize < 14) {
 				memset(slavebuf+snsize+2, ' ', 14-snsize);				
