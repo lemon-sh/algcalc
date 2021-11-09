@@ -8,18 +8,6 @@
 #define BUFSIZE 64 // <256
 #define VERSION "0.1"
 
-// a few key points about this function:
-// - this is an implementation of the missing fabs() function required by TinyExpr
-// - it should be in the Arduino standard library, but for some reason it's missing
-// - I stole it from musl: https://git.musl-libc.org/cgit/musl/tree/src/math/fabsf.c
-// - I have absolutely no idea how it works
-double fabs(double x)
-{
-	union { double f; uint32_t i; } u = {x};
-	u.i &= 0x7fffffff;
-	return u.f;
-}
-
 const static char inferr[] PROGMEM = "Undefined     ";
 const static char nanerr[] PROGMEM = "Error at %d";
 
