@@ -24,17 +24,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/* COMPILE TIME OPTIONS */
-
-/* Exponentiation associativity:
-For a^b^c = (a^b)^c and -a^b = (-a)^b do nothing.
-For a^b^c = a^(b^c) and -a^b = -(a^b) uncomment the next line.*/
-/* #define TE_POW_FROM_RIGHT */
-
-/* Logarithms
-For log = base 10 log do nothing
-For log = natural log uncomment the next line. */
-/* #define TE_NAT_LOG */
+// For log = base 10 log do nothing
+// For log = natural log uncomment the next line.
+//#define TE_NAT_LOG
 
 #include "tinyexpr.h"
 #include <stdlib.h>
@@ -228,7 +220,7 @@ void next_token(state *s) {
 
         /* Try reading a number. */
         if ((s->next[0] >= '0' && s->next[0] <= '9') || s->next[0] == '.') {
-            s->value = strtod(s->next, (char**)&s->next);
+            s->value = fp64_strtod(s->next, (char**)&s->next);
             s->type = TOK_NUMBER;
         } else {
             /* Look for a variable or builtin function call. */
@@ -406,11 +398,37 @@ static te_expr *factor(state *s) {
     /* <factor>    =    <power> {"^" <power>} */
     te_expr *ret = power(s);
 
+    int neg = 0;
+
+    if (ret->type == (TE_FUNCTION1 | TE_FLAG_PURE) && ret->function == negate) {
+        te_expr *se = ret->parameters[0];
+        free(ret);
+        ret = se;
+        neg = 1;
+    }
+
+    te_expr *insertion = 0;
+
     while (s->type == TOK_INFIX && (s->function == fp64_pow)) {
         te_fun2 t = s->function;
         next_token(s);
-        ret = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, ret, power(s));
-        ret->function = t;
+
+        if (insertion) {
+            /* Make exponentiation go right-to-left. */
+            te_expr *insert = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, insertion->parameters[1], power(s));
+            insert->function = t;
+            insertion->parameters[1] = insert;
+            insertion = insert;
+        } else {
+            ret = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, ret, power(s));
+            ret->function = t;
+            insertion = ret;
+        }
+    }
+
+    if (neg) {
+        ret = NEW_EXPR(TE_FUNCTION1 | TE_FLAG_PURE, ret);
+        ret->function = negate;
     }
 
     return ret;
