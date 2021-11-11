@@ -18,4 +18,4 @@ Arduino pin(s)|Connected to
 A6|_Li-Ion Battery_ (for measuring voltage)
 
 ## Arduino pinout
-![Arduino NANO pinout](https://content.arduino.cc/assets/Pinout-NANO_latest.png)
+![Arduino NANO pinout](/docs/media/Pinout-NANO_latest.png)
