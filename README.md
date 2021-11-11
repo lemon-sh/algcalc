@@ -3,6 +3,6 @@ algCalc is a "gaming calculator" hardware project. This repository contains the 
 
 ## Documentation
 * [Wiring](/docs/wiring.md)
-* Components (WIP)
+* [Components](/docs/components.md)
 * User interface (WIP)
 * Firmware & project structure (WIP)
