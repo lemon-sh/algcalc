@@ -4,5 +4,5 @@ algCalc is a "gaming calculator" hardware project. This repository contains the 
 ## Documentation
 * [Wiring](/docs/wiring.md)
 * [Components](/docs/components.md)
+* [Firmware & project structure](/docs/firmware.md)
 * User interface (WIP)
-* Firmware & project structure (WIP)
