@@ -8,7 +8,6 @@ GND|_GND_ (1), _RW_ (5), _Led-_ (16)
 A0|_RS_ (4)
 A1|_Enable_ (6)
 A2-A5|_D4_ (11) - _D7_ (14)
-* LCD Pin 15 (Led+) requires a resistor (e.g. 330 ohm), **otherwise, you will fry the backlight!**
 * LCD Pin 3 should be connected to the Arduino (both 5V and GND) via a potentiometer to control the contrast.
 ### Keyboard
 ###### See [Components](/docs/components.md) for more information about the mechanical keyboard module.
