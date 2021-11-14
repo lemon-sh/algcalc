@@ -11,12 +11,22 @@
 const static char inferr[] PROGMEM = "Undefined     ";
 const static char nanerr[] PROGMEM = "Error at %d";
 
+extern char *__brkval;
+int freeMemory() {
+  char top;
+#if defined(CORE_TEENSY) || (ARDUINO > 103 && ARDUINO != 151)
+  return &top - __brkval;
+#else
+  return __brkval ? &top - __brkval : &top - __malloc_heap_start;
+#endif
+}
+
 namespace App
 {
 	LiquidCrystal lcd(A0,A1,A2,A3,A4,A5);
-	char masterbuf[BUFSIZE+1], slavebuf[17];
+	char masterbuf[BUFSIZE+1], slavebuf[17] = "                ";
 	byte buflength = 0, cursoroffset = 0, viewoffset = 0;
-	double evalout = 0.0;
+	float64_t evalout;
 	te_variable evalvar = {"x", &evalout};
 
 	void render(byte withslave)
@@ -94,9 +104,21 @@ namespace App
 		render(0);
 	}
 
+	void insert_cursor(char* elems, byte negoff) {
+		unsigned int elemslen = strlen(elems);
+		if (buflength+elemslen > BUFSIZE) return;
+		for (byte i = buflength-1+elemslen; i > cursoroffset+elemslen; i--)
+		{
+			masterbuf[i] = masterbuf[i-elemslen];
+		}
+		memcpy(masterbuf+cursoroffset, elems, elemslen);
+		buflength += elemslen;
+		cursoroffset += elemslen - negoff;
+		render(0);
+	}
+
 	void clearmaster() {
-		buflength = 0;
-		cursoroffset = 0;
+		buflength = cursoroffset = 0;
 		render(0);
 	}
 
@@ -117,7 +139,7 @@ namespace App
 		} else if (isinf(evalout)) {
 			strcpy_P(slavebuf+2, inferr);
 		} else {
-			dtostrf(evalout, -14, 6, slavebuf+2);
+			strcpy(slavebuf+2, fp64_to_string(evalout, 14, 0));
 		}
 		render(1);
 	}
@@ -131,7 +153,6 @@ namespace App
 		lcd.print(F("Adam & lemonsh"));
 		delay(2000);
 		lcd.cursor();
-		memset(slavebuf, ' ', 16);
 		render(1);
 	}
 
@@ -162,6 +183,8 @@ namespace App
 			case InputType::parbeg: insert_cursor('('); break;
 			case InputType::parend: insert_cursor(')'); break;
 			case InputType::clr: clearmaster(); break;
+
+			case InputType::sqrt: insert_cursor("sqrt()", 0); break;
 		}
 	}
 }

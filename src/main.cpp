@@ -25,9 +25,6 @@ void setup() {
 }
 
 void loop() {
-	//  case ',': case '.': App::input(App::InputType::dot); break;
-	// 	case '(': App::input(App::InputType::parbeg); break;
-	// 	case ')': App::input(App::InputType::parend); break;
 	char key = keypad.waitForKey();
 	if (fnmode) {
 		switch(key) {

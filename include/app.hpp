@@ -18,6 +18,8 @@ namespace App
 		clr, del, ret,
 		// operators
 		add, sub, mul, div,
+		// functions
+		sqrt,
 		// special
 		dot, parbeg, parend,
 	};
