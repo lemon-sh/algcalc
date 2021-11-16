@@ -17,7 +17,7 @@ namespace App
 		// control
 		clr, del, ret,
 		// operators
-		add, sub, mul, div,
+		add, sub, mul, div, pow,
 		// functions
 		sqrt,
 		// special

@@ -28,9 +28,11 @@ void loop() {
 	char key = keypad.waitForKey();
 	if (fnmode) {
 		switch(key) {
+			case 'A': App::input(App::InputType::pow); break;
 			case 'E': App::input(App::InputType::parbeg); break;
 			case 'F': App::input(App::InputType::parend); break;
 			case 'G': App::input(App::InputType::dot); break;
+			case '7': App::input(App::InputType::sqrt); break;
 		}
 		fnmode = 0;
 	} else switch(key) {
@@ -53,6 +55,6 @@ void loop() {
 		case 'D': App::input(App::InputType::sub); break;
 		case 'E': App::input(App::InputType::mul); break;
 		case 'F': App::input(App::InputType::div); break;
-		case 'H': fnmode = 1; break;
+		case 'H': fnmode = 1;
 	}
 }

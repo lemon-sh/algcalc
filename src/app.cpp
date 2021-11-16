@@ -179,12 +179,13 @@ namespace App
 			case InputType::sub: insert_cursor('-'); break;
 			case InputType::mul: insert_cursor('*'); break;
 			case InputType::div: insert_cursor('/'); break;
+			case InputType::pow: insert_cursor('^'); break;
 			case InputType::dot: insert_cursor('.'); break;
 			case InputType::parbeg: insert_cursor('('); break;
 			case InputType::parend: insert_cursor(')'); break;
 			case InputType::clr: clearmaster(); break;
 
-			case InputType::sqrt: insert_cursor("sqrt()", 0); break;
+			case InputType::sqrt: insert_cursor("sqrt()", 1); break;
 		}
 	}
 }
