@@ -6,7 +6,7 @@
 #include "app.hpp"
 
 #define BUFSIZE 64 // <256
-#define VERSION "0.1"
+#define VERSION "0.2"
 
 const static char inferr[] PROGMEM = "Undefined     ";
 const static char nanerr[] PROGMEM = "Error at %d";
