@@ -19,9 +19,9 @@ namespace App
 		// operators
 		add, sub, mul, div, pow,
 		// functions
-		sqrt,
+		sqrt, abs, sin, cos, tan,
 		// special
-		dot, parbeg, parend,
+		dot, parbeg, parend, pi
 	};
 
 	void init();

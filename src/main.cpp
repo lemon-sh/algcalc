@@ -33,6 +33,11 @@ void loop() {
 			case 'F': App::input(App::InputType::parend); break;
 			case 'G': App::input(App::InputType::dot); break;
 			case '7': App::input(App::InputType::sqrt); break;
+			case '8': App::input(App::InputType::abs); break;
+			case '6': App::input(App::InputType::tan); break;
+			case '5': App::input(App::InputType::cos); break;
+			case '4': App::input(App::InputType::sin); break;
+			case '1': App::input(App::InputType::pi); break;
 		}
 		fnmode = 0;
 	} else switch(key) {

@@ -171,6 +171,11 @@ namespace App
 			case InputType::clr: clearmaster(); break;
 
 			case InputType::sqrt: insert_cursor("sqrt()", 1); break;
+			case InputType::abs: insert_cursor("abs()", 1); break;
+			case InputType::sin: insert_cursor("sin()", 1); break;
+			case InputType::cos: insert_cursor("cos()", 1); break;
+			case InputType::tan: insert_cursor("tan()", 1); break;
+			case InputType::pi: insert_cursor("pi", 0); break;
 		}
 	}
 }
