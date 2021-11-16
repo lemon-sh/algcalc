@@ -11,20 +11,10 @@
 const static char inferr[] PROGMEM = "Undefined     ";
 const static char nanerr[] PROGMEM = "Error at %d";
 
-extern char *__brkval;
-int freeMemory() {
-  char top;
-#if defined(CORE_TEENSY) || (ARDUINO > 103 && ARDUINO != 151)
-  return &top - __brkval;
-#else
-  return __brkval ? &top - __brkval : &top - __malloc_heap_start;
-#endif
-}
-
 namespace App
 {
 	LiquidCrystal lcd(A0,A1,A2,A3,A4,A5);
-	char masterbuf[BUFSIZE+1], slavebuf[17] = "                ";
+	char masterbuf[BUFSIZE+1], slavebuf[17] = "Ready.          ";
 	byte buflength = 0, cursoroffset = 0, viewoffset = 0;
 	float64_t evalout;
 	te_variable evalvar = {"x", &evalout};
@@ -83,10 +73,7 @@ namespace App
 
 	void delete_cursor() {
 		if (buflength == 0 || cursoroffset == 0) return;
-		for (byte i = cursoroffset; i < buflength; i++)
-		{
-			masterbuf[i-1] = masterbuf[i];
-		}
+		memmove(masterbuf+cursoroffset-1, masterbuf+cursoroffset, buflength-cursoroffset);
 		buflength--;
 		cursoroffset--;
 		render(0);
@@ -94,23 +81,17 @@ namespace App
 
 	void insert_cursor(char elem) {
 		if (buflength == BUFSIZE) return;
-		for (byte i = buflength; i > cursoroffset; i--)
-		{
-			masterbuf[i] = masterbuf[i-1];
-		}
+		memmove(masterbuf+cursoroffset+1, masterbuf+cursoroffset, buflength-cursoroffset);
 		masterbuf[cursoroffset] = elem;
 		buflength++;
 		cursoroffset++;
 		render(0);
 	}
 
-	void insert_cursor(char* elems, byte negoff) {
+	void insert_cursor(const char* elems, byte negoff) {
 		unsigned int elemslen = strlen(elems);
 		if (buflength+elemslen > BUFSIZE) return;
-		for (byte i = buflength-1+elemslen; i > cursoroffset+elemslen; i--)
-		{
-			masterbuf[i] = masterbuf[i-elemslen];
-		}
+		memmove(masterbuf+cursoroffset+elemslen, masterbuf+cursoroffset, buflength-cursoroffset);
 		memcpy(masterbuf+cursoroffset, elems, elemslen);
 		buflength += elemslen;
 		cursoroffset += elemslen - negoff;
@@ -134,12 +115,16 @@ namespace App
 			cursoroffset = terr-1;
 			int snsize = snprintf_P(slavebuf+2, 15, nanerr, terr);
 			if (snsize < 14) {
-				memset(slavebuf+snsize+2, ' ', 14-snsize);				
+				memset(slavebuf+snsize+2, ' ', 14-snsize);
 			}
 		} else if (isinf(evalout)) {
-			strcpy_P(slavebuf+2, inferr);
+			memcpy_P(slavebuf+2, inferr, 14);
 		} else {
-			strcpy(slavebuf+2, fp64_to_string(evalout, 14, 0));
+			char* result = fp64_to_string(evalout, 14, 0);
+			size_t resultlen = strlen(result);
+			if (resultlen > 14) resultlen = 14;
+			else if (resultlen < 14) memset(result+resultlen, ' ', 14-resultlen);
+			memcpy(slavebuf+2, result, 14);
 		}
 		render(1);
 	}
@@ -151,7 +136,7 @@ namespace App
 		lcd.print(F("algCalc " VERSION));
 		lcd.setCursor(1, 1);
 		lcd.print(F("Adam & lemonsh"));
-		delay(2000);
+		delay(1000);
 		lcd.cursor();
 		render(1);
 	}
