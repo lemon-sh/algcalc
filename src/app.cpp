@@ -120,7 +120,7 @@ namespace App
 		} else if (isinf(evalout)) {
 			memcpy_P(slavebuf+2, inferr, 14);
 		} else {
-			char* result = fp64_to_string(evalout, 14, 0);
+			char* result = fp64_to_string(evalout, 14, 6);
 			size_t resultlen = strlen(result);
 			if (resultlen > 14) resultlen = 14;
 			else if (resultlen < 14) memset(result+resultlen, ' ', 14-resultlen);
@@ -166,6 +166,7 @@ namespace App
 			case InputType::div: insert_cursor('/'); break;
 			case InputType::pow: insert_cursor('^'); break;
 			case InputType::dot: insert_cursor('.'); break;
+			case InputType::x: insert_cursor('x'); break;
 			case InputType::parbeg: insert_cursor('('); break;
 			case InputType::parend: insert_cursor(')'); break;
 			case InputType::clr: clearmaster(); break;

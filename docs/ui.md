@@ -5,7 +5,7 @@
 ### Normal mode
 ```
 +-----+-----+-----+-----+-----+
-|  7  |  8  |  9  | Del | Clr |
+|  7  |  8  |  9  | del |  .  |
 +-----+-----+-----+-----+-----+
 |  4  |  5  |  6  |  +  |  -  |
 +-----+-----+-----+-----+-----+
@@ -14,16 +14,23 @@
 |  0  |  <- | ->  |  =  | Fn  |
 +-----+-----+-----+-----+-----+
 ```
+Explaination:
+* `del`: backspace
+* `<-` & `->`: cursor movement
 ### `Fn` mode
-*algCalc is still in development, and the Fn keymap is very likely to change often*
+You can enter the Fn mode by tapping the Fn key (see keymap above).
 ```
 +-----+-----+-----+-----+-----+
-| sqr | abs |     |  ^  |     |
+| sqr | abs |     |     | clr |
 +-----+-----+-----+-----+-----+
 | sin | cos | tan |     |     |
 +-----+-----+-----+-----+-----+
-| pi  |     |  3  |  (  |  )  |
+| pi  |     |  x  |  (  |  )  |
 +-----+-----+-----+-----+-----+
-|  0  |     |     |  .  |  q  |
+|     |     |     |  ^  |     |
 +-----+-----+-----+-----+-----+
 ```
+Explaination:
+* `x`: last calculation result.
+* `sqr`: square root
+* `clr`: clear input box

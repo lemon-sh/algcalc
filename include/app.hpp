@@ -21,7 +21,7 @@ namespace App
 		// functions
 		sqrt, abs, sin, cos, tan,
 		// special
-		dot, parbeg, parend, pi
+		dot, parbeg, parend, pi, x
 	};
 
 	void init();

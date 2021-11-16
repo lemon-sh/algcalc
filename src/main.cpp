@@ -28,23 +28,24 @@ void loop() {
 	char key = keypad.waitForKey();
 	if (fnmode) {
 		switch(key) {
-			case 'A': App::input(App::InputType::pow); break;
 			case 'E': App::input(App::InputType::parbeg); break;
 			case 'F': App::input(App::InputType::parend); break;
-			case 'G': App::input(App::InputType::dot); break;
+			case 'G': App::input(App::InputType::pow); break;
 			case '7': App::input(App::InputType::sqrt); break;
 			case '8': App::input(App::InputType::abs); break;
 			case '6': App::input(App::InputType::tan); break;
 			case '5': App::input(App::InputType::cos); break;
 			case '4': App::input(App::InputType::sin); break;
 			case '1': App::input(App::InputType::pi); break;
+			case 'B': App::input(App::InputType::clr); break;
+			case '3': App::input(App::InputType::x); break;
 		}
 		fnmode = 0;
 	} else switch(key) {
 		case 'X': App::input(App::InputType::left); break;
 		case 'Z': App::input(App::InputType::right); break;
 		case 'A': App::input(App::InputType::del); break;
-		case 'B': App::input(App::InputType::clr); break;
+		case 'B': App::input(App::InputType::dot); break;
 		case 'G': App::input(App::InputType::ret); break;
 		case '0': App::input(App::InputType::d0); break;
 		case '1': App::input(App::InputType::d1); break;
