@@ -14,7 +14,7 @@
 |  0  |  <- | ->  |  =  | Fn  |
 +-----+-----+-----+-----+-----+
 ```
-Explaination:
+Explanation:
 * `del`: backspace
 * `<-` & `->`: cursor movement
 ### `Fn` mode
@@ -30,7 +30,7 @@ You can enter the Fn mode by tapping the Fn key (see keymap above).
 |     |     |     |  ^  |     |
 +-----+-----+-----+-----+-----+
 ```
-Explaination:
+Explanation:
 * `x`: last calculation result.
 * `sqr`: square root
 * `clr`: clear input box
