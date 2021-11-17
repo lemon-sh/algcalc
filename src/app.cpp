@@ -111,13 +111,13 @@ namespace App
 		te_free(expr);
 		slavebuf[0] = '=';
 		slavebuf[1] = ' ';
-		if (isnan(evalout)) {
+		if (fp64_isnan(evalout)) {
 			cursoroffset = terr-1;
 			int snsize = snprintf_P(slavebuf+2, 15, nanerr, terr);
 			if (snsize < 14) {
 				memset(slavebuf+snsize+2, ' ', 14-snsize);
 			}
-		} else if (isinf(evalout)) {
+		} else if (fp64_isinf(evalout)) {
 			memcpy_P(slavebuf+2, inferr, 14);
 		} else {
 			char* result = fp64_to_string(evalout, 14, 6);
@@ -172,11 +172,16 @@ namespace App
 			case InputType::clr: clearmaster(); break;
 
 			case InputType::sqrt: insert_cursor("sqrt()", 1); break;
+			case InputType::cbrt: insert_cursor("cbrt()", 1); break;
 			case InputType::abs: insert_cursor("abs()", 1); break;
 			case InputType::sin: insert_cursor("sin()", 1); break;
 			case InputType::cos: insert_cursor("cos()", 1); break;
 			case InputType::tan: insert_cursor("tan()", 1); break;
+			case InputType::log: insert_cursor("log()", 1); break;
+			case InputType::ceil: insert_cursor("ceil()", 1); break;
+			case InputType::floor: insert_cursor("floor()", 1); break;
 			case InputType::pi: insert_cursor("pi", 0); break;
+			case InputType::e: insert_cursor("e", 0); break;
 		}
 	}
 }

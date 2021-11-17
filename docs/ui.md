@@ -21,16 +21,17 @@ Explaination:
 You can enter the Fn mode by tapping the Fn key (see keymap above).
 ```
 +-----+-----+-----+-----+-----+
-| sqr | abs |     |     | clr |
+| sqr | abs | cbr |     | clr |
 +-----+-----+-----+-----+-----+
 | sin | cos | tan |     |     |
 +-----+-----+-----+-----+-----+
-| pi  |     |  x  |  (  |  )  |
+| pi  |  e  |  x  |  (  |  )  |
 +-----+-----+-----+-----+-----+
-|     |     |     |  ^  |     |
+| flo | cei | log |  ^  |     |
 +-----+-----+-----+-----+-----+
 ```
 Explaination:
 * `x`: last calculation result.
 * `sqr`: square root
+* `cbr`: cubic root
 * `clr`: clear input box

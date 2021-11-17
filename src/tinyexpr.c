@@ -24,10 +24,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-// For log = base 10 log do nothing
-// For log = natural log uncomment the next line.
-//#define TE_NAT_LOG
-
 #include "tinyexpr.h"
 #include <stdlib.h>
 #include <string.h>
@@ -102,66 +98,66 @@ void te_free(te_expr *n) {
 
 static float64_t pi(void) {return float64_NUMBER_PI;}
 static float64_t e(void) {return float64_EULER_E;}
-static float64_t fac(float64_t a) {/* simplest version of fac */
-    if (a < 0.0)
-        return float64_ONE_POSSIBLE_NAN_REPRESENTATION;
-    if (a > UINT_MAX)
-        return float64_PLUS_INFINITY;
-    unsigned int ua = fp64_to_uint16(a);
-    unsigned long int result = 1, i;
-    for (i = 1; i <= ua; i++) {
-        if (i > ULONG_MAX / result)
-            return float64_PLUS_INFINITY;
-        result *= i;
-    }
-    return fp64_uint32_to_float64(result);
-}
-static float64_t ncr(float64_t n, float64_t r) {
-    if (fp64_compare(n, float64_NUMBER_PLUS_ZERO) == -1 || fp64_compare(r, float64_NUMBER_PLUS_ZERO) == -1 || fp64_compare(n, r) == -1) return float64_ONE_POSSIBLE_NAN_REPRESENTATION;
-    if (fp64_compare(n, fp64_uint16_to_float64(UINT_MAX)) == 1 || fp64_compare(r, fp64_uint16_to_float64(UINT_MAX)) == 1) return float64_PLUS_INFINITY;
-    unsigned long int un = fp64_to_uint16(n), ur = fp64_to_uint16(r), i;
-    unsigned long int result = 1;
-    if (ur > un / 2) ur = un - ur;
-    for (i = 1; i <= ur; i++) {
-        if (result > ULONG_MAX / (un - ur + i))
-            return float64_PLUS_INFINITY;
-        result *= un - ur + i;
-        result /= i;
-    }
-    return result;
-}
-static float64_t npr(float64_t n, float64_t r) {return fp64_mul(ncr(n, r), fac(r));}
+
+// commented out functions are for later implementation
+
+// static float64_t fac(float64_t a) {/* simplest version of fac */
+//     if (a < 0.0)
+//         return float64_ONE_POSSIBLE_NAN_REPRESENTATION;
+//     if (a > UINT_MAX)
+//         return float64_PLUS_INFINITY;
+//     unsigned int ua = fp64_to_uint16(a);
+//     unsigned long int result = 1, i;
+//     for (i = 1; i <= ua; i++) {
+//         if (i > ULONG_MAX / result)
+//             return float64_PLUS_INFINITY;
+//         result *= i;
+//     }
+//     return fp64_uint32_to_float64(result);
+// }
+
+// static float64_t ncr(float64_t n, float64_t r) {
+//     if (fp64_compare(n, float64_NUMBER_PLUS_ZERO) == -1 || fp64_compare(r, float64_NUMBER_PLUS_ZERO) == -1 || fp64_compare(n, r) == -1) return float64_ONE_POSSIBLE_NAN_REPRESENTATION;
+//     if (fp64_compare(n, fp64_uint16_to_float64(UINT_MAX)) == 1 || fp64_compare(r, fp64_uint16_to_float64(UINT_MAX)) == 1) return float64_PLUS_INFINITY;
+//     unsigned long int un = fp64_to_uint16(n), ur = fp64_to_uint16(r), i;
+//     unsigned long int result = 1;
+//     if (ur > un / 2) ur = un - ur;
+//     for (i = 1; i <= ur; i++) {
+//         if (result > ULONG_MAX / (un - ur + i))
+//             return float64_PLUS_INFINITY;
+//         result *= un - ur + i;
+//         result /= i;
+//     }
+//     return result;
+// }
+// static float64_t npr(float64_t n, float64_t r) {return fp64_mul(ncr(n, r), fac(r));}
 
 static const te_variable functions[] = {
     /* must be in alphabetical order */
     {"abs", fp64_abs,     TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"acos", fp64_acos,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"asin", fp64_asin,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"atan", fp64_atan,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"atan2", fp64_atan2,  TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    // {"acos", fp64_acos,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    // {"asin", fp64_asin,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    // {"atan", fp64_atan,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    // {"atan2", fp64_atan2,  TE_FUNCTION2 | TE_FLAG_PURE, 0},
+	{"cbrt", fp64_cbrt,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"ceil", fp64_ceil,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"cos", fp64_cos,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"cosh", fp64_cosh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    // {"cosh", fp64_cosh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"e", e,          TE_FUNCTION0 | TE_FLAG_PURE, 0},
-    {"exp", fp64_exp,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"fac", fac,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    //{"exp", fp64_exp,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    //{"fac", fac,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"floor", fp64_floor,  TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"ln", fp64_log,       TE_FUNCTION1 | TE_FLAG_PURE, 0},
-#ifdef TE_NAT_LOG
-    {"log", fp64_log,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-#else
+    //{"ln", fp64_log,       TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"log", fp64_log10,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-#endif
-    {"log10", fp64_log10,  TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"ncr", ncr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
-    {"npr", npr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    // {"ncr", ncr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    // {"npr", npr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
     {"pi", pi,        TE_FUNCTION0 | TE_FLAG_PURE, 0},
     {"pow", fp64_pow,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
     {"sin", fp64_sin,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"sinh", fp64_sinh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    // {"sinh", fp64_sinh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"sqrt", fp64_sqrt,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"tan", fp64_tan,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"tanh", fp64_tanh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    // {"tanh", fp64_tanh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {0, 0, 0, 0}
 };
 
