@@ -15,10 +15,6 @@ Arduino pins|Keyboard pins
 ---|---
 D2-D5|_Row 0 _-_ Row 4_
 D6-D10|_Col 0 _-_ Col 5_
-### Miscellanous
-Arduino pin(s)|Connected to
----|---
-A6|_Li-Ion Battery_ (for measuring voltage)
 
 ## Arduino pinout
-![Arduino NANO pinout](/docs/media/Pinout-NANO_latest.png)
+![Arduino NANO pinout](media/Pinout-NANO_latest.png)
