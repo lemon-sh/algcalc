@@ -10,7 +10,7 @@ A1|_Enable_ (6)
 A2-A5|_D4_ (11) - _D7_ (14)
 * LCD Pin 3 should be connected to the Arduino (both 5V and GND) via a potentiometer to control the contrast.
 ### Keyboard
-###### See [Components](/docs/components.md) for more information about the mechanical keyboard module.
+###### See [Components](components.md) for more information about the mechanical keyboard module.
 Arduino pins|Keyboard pins
 ---|---
 D2-D5|_Row 0 _-_ Row 4_
